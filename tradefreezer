@@ -1,0 +1,227 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- ==== LOADING SCREEN ====
+local loadingGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+loadingGui.Name = "LoadingScreen"
+
+local loadingFrame = Instance.new("Frame")
+loadingFrame.Size = UDim2.new(0, 300, 0, 100)
+loadingFrame.Position = UDim2.new(0.5, -150, 0.5, -50)
+loadingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+loadingFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+loadingFrame.Parent = loadingGui
+
+local loadingLabel = Instance.new("TextLabel")
+loadingLabel.Size = UDim2.new(1, 0, 1, 0)
+loadingLabel.BackgroundTransparency = 1
+loadingLabel.TextColor3 = Color3.new(1, 0, 0)
+loadingLabel.Font = Enum.Font.Arcade
+loadingLabel.TextSize = 32
+loadingLabel.Text = "Loading... 0%"
+loadingLabel.Parent = loadingFrame
+
+for i = 1, 100 do
+	loadingLabel.Text = "Loading... " .. i .. "%"
+	task.wait(0.03) -- about 3 seconds total
+end
+loadingGui:Destroy()
+
+-- ==== MAIN GUI ====
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+screenGui.Name = "DemonicTradeFreezer"
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 350, 0, 400)
+frame.Position = UDim2.new(0.3, 0, 0.2, 0)
+frame.BackgroundColor3 = Color3.fromRGB(20, 0, 0)
+frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+frame.Active = true
+frame.Draggable = true
+frame.Parent = screenGui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundColor3 = Color3.fromRGB(60, 0, 0)
+title.Text = "👹 Auto Trade Freezer 👹"
+title.TextColor3 = Color3.new(1, 0, 0)
+title.Font = Enum.Font.Arcade
+title.TextSize = 20
+title.Parent = frame
+
+local minimizeBtn = Instance.new("TextButton")
+minimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+minimizeBtn.Position = UDim2.new(1, -60, 0, 0)
+minimizeBtn.Text = "-"
+minimizeBtn.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
+minimizeBtn.TextColor3 = Color3.new(1, 1, 1)
+minimizeBtn.Parent = frame
+
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -30, 0, 0)
+closeBtn.Text = "X"
+closeBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+closeBtn.TextColor3 = Color3.new(1, 1, 1)
+closeBtn.Parent = frame
+
+local reopenBtn = Instance.new("TextButton")
+reopenBtn.Size = UDim2.new(0, 160, 0, 40)
+reopenBtn.Position = UDim2.new(0, 20, 0.8, 0)
+reopenBtn.Text = "👁 Open Trade Freezer"
+reopenBtn.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+reopenBtn.TextColor3 = Color3.new(1, 1, 1)
+reopenBtn.Visible = false
+reopenBtn.Parent = screenGui
+
+-- ==== PLAYER LIST ====
+local playerList = Instance.new("ScrollingFrame")
+playerList.Size = UDim2.new(0.45, 0, 0.65, 0)
+playerList.Position = UDim2.new(0.025, 0, 0.1, 0)
+playerList.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
+playerList.ScrollBarThickness = 4
+playerList.CanvasSize = UDim2.new(0, 0, 0, 0)
+playerList.Parent = frame
+
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Size = UDim2.new(0.95, 0, 0, 30)
+statusLabel.Position = UDim2.new(0.025, 0, 0.8, 0)
+statusLabel.Text = "Status: Ready..."
+statusLabel.TextColor3 = Color3.new(1, 0, 0)
+statusLabel.BackgroundTransparency = 1
+statusLabel.Font = Enum.Font.Arcade
+statusLabel.TextSize = 18
+statusLabel.TextWrapped = true
+statusLabel.Parent = frame
+
+-- ==== EXTRA TOOLS ====
+local eggBtn = Instance.new("TextButton")
+eggBtn.Size = UDim2.new(0.45, 0, 0, 30)
+eggBtn.Position = UDim2.new(0.525, 0, 0.1, 0)
+eggBtn.Text = "🎲 Find Egg"
+eggBtn.BackgroundColor3 = Color3.fromRGB(60, 0, 0)
+eggBtn.TextColor3 = Color3.new(1, 1, 1)
+eggBtn.Font = Enum.Font.Arcade
+eggBtn.TextSize = 18
+eggBtn.Parent = frame
+
+local mutBtn = Instance.new("TextButton")
+mutBtn.Size = UDim2.new(0.45, 0, 0, 30)
+mutBtn.Position = UDim2.new(0.525, 0, 0.2, 0)
+mutBtn.Text = "🧬 Mutation"
+mutBtn.BackgroundColor3 = Color3.fromRGB(60, 0, 0)
+mutBtn.TextColor3 = Color3.new(1, 1, 1)
+mutBtn.Font = Enum.Font.Arcade
+mutBtn.TextSize = 18
+mutBtn.Parent = frame
+
+local ageLabel = Instance.new("TextLabel")
+ageLabel.Size = UDim2.new(0.45, 0, 0, 30)
+ageLabel.Position = UDim2.new(0.525, 0, 0.3, 0)
+ageLabel.Text = "🐣 Pet Age: 50"
+ageLabel.BackgroundColor3 = Color3.fromRGB(90, 0, 0)
+ageLabel.TextColor3 = Color3.new(1, 1, 1)
+ageLabel.Font = Enum.Font.Arcade
+ageLabel.TextSize = 18
+ageLabel.Parent = frame
+
+-- ==== SHEKELS VISUAL ====
+local shekelAmount = 999999999
+local shekelLabel = Instance.new("TextLabel")
+shekelLabel.Size = UDim2.new(0, 200, 0, 30)
+shekelLabel.Position = UDim2.new(0, 20, 0.05, 0)
+shekelLabel.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+shekelLabel.TextColor3 = Color3.new(1, 0.85, 0)
+shekelLabel.Font = Enum.Font.Arcade
+shekelLabel.TextSize = 20
+shekelLabel.Text = "💰 Shekels: " .. shekelAmount
+shekelLabel.Parent = screenGui
+
+local shekelBtn = Instance.new("TextButton")
+shekelBtn.Size = UDim2.new(0, 160, 0, 30)
+shekelBtn.Position = UDim2.new(0, 20, 0.13, 0)
+shekelBtn.Text = "💸 Dupe Shekels (Visual)"
+shekelBtn.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
+shekelBtn.TextColor3 = Color3.new(1, 1, 1)
+shekelBtn.Font = Enum.Font.Arcade
+shekelBtn.TextSize = 18
+shekelBtn.Parent = screenGui
+
+shekelBtn.MouseButton1Click:Connect(function()
+	shekelAmount += math.random(5000000, 10000000)
+	shekelLabel.Text = "💰 Shekels: " .. shekelAmount
+end)
+
+-- ==== FUNCTIONALITY ====
+local function createPlayerButton(name)
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(1, -10, 0, 25)
+	btn.Position = UDim2.new(0, 5, 0, 0)
+	btn.Text = name
+	btn.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Font = Enum.Font.Arcade
+	btn.TextSize = 16
+
+	btn.MouseButton1Click:Connect(function()
+		statusLabel.Text = "Freezing trade with " .. name .. "..."
+		btn.Text = "⏳ Waiting..."
+		btn.AutoButtonColor = false
+		task.wait(15)
+		statusLabel.Text = name .. " is frozen for trade!"
+		btn.Text = name
+		btn.AutoButtonColor = true
+	end)
+
+	return btn
+end
+
+local function updatePlayerList()
+	playerList:ClearAllChildren()
+	local y = 0
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player ~= Players.LocalPlayer then
+			local btn = createPlayerButton(player.Name)
+			btn.Position = UDim2.new(0, 5, 0, y)
+			btn.Parent = playerList
+			y += 30
+		end
+	end
+	playerList.CanvasSize = UDim2.new(0, 0, 0, y)
+end
+
+updatePlayerList()
+Players.PlayerAdded:Connect(updatePlayerList)
+Players.PlayerRemoving:Connect(updatePlayerList)
+
+local eggNames = {"Fire Egg", "Shadow Egg", "Moonlight Egg", "Blood Egg", "Chaos Egg"}
+eggBtn.MouseButton1Click:Connect(function()
+	local pick = eggNames[math.random(#eggNames)]
+	statusLabel.Text = "🔍 Found: " .. pick
+end)
+
+local mutations = {"Glitched", "Rainbow", "Hellborn", "Cursed", "Demonic", "Inverted"}
+mutBtn.MouseButton1Click:Connect(function()
+	local pick = mutations[math.random(#mutations)]
+	statusLabel.Text = "🧬 Mutation: " .. pick
+end)
+
+local minimized = false
+minimizeBtn.MouseButton1Click:Connect(function()
+	minimized = not minimized
+	for _, child in ipairs(frame:GetChildren()) do
+		if child ~= title and child ~= minimizeBtn and child ~= closeBtn then
+			child.Visible = not minimized
+		end
+	end
+end)
+
+closeBtn.MouseButton1Click:Connect(function()
+	frame.Visible = false
+	reopenBtn.Visible = true
+end)
+
+reopenBtn.MouseButton1Click:Connect(function()
+	frame.Visible = true
+	reopenBtn.Visible = false
+end)
