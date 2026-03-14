@@ -1,0 +1,255 @@
+local player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+
+--========================
+-- LOADING SCREEN (CLEAR)
+--========================
+local loadGui = Instance.new("ScreenGui")
+loadGui.Name = "SAB_Load"
+loadGui.Parent = player.PlayerGui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0,400,0,100)
+title.Position = UDim2.new(0.5, -200, 0.5, -50)
+title.BackgroundTransparency = 1
+title.Text = "SAB SCRPT"
+title.Font = Enum.Font.GothamBlack
+title.TextScaled = true
+title.TextStrokeTransparency = 0
+title.TextColor3 = Color3.fromRGB(255,0,0)
+title.Parent = loadGui
+
+-- Rainbow animation for loading text
+spawn(function()
+	while title.Parent do
+		for i = 0,255,5 do
+			title.TextColor3 = Color3.fromRGB(255,i,0)
+			task.wait(0.02)
+		end
+		for i = 255,0,-5 do
+			title.TextColor3 = Color3.fromRGB(255,i,0)
+			task.wait(0.02)
+		end
+	end
+end)
+
+task.wait(2)
+loadGui:Destroy()
+
+--========================
+-- MAIN HUB (CLEAR)
+--========================
+local gui = Instance.new("ScreenGui")
+gui.Name = "ViralHubV4"
+gui.Parent = player.PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0,300,0,220)
+frame.Position = UDim2.new(0.5,0,0.5,0)
+frame.AnchorPoint = Vector2.new(0.5,0.5)
+frame.BackgroundTransparency = 0.4
+frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+Instance.new("UICorner",frame)
+
+-- glowing border
+local stroke = Instance.new("UIStroke")
+stroke.Parent = frame
+stroke.Thickness = 2
+
+spawn(function()
+	while true do
+		for i=0,255,5 do
+			stroke.Color = Color3.fromRGB(255,i,0)
+			task.wait(0.02)
+		end
+		for i=255,0,-5 do
+			stroke.Color = Color3.fromRGB(255,i,0)
+			task.wait(0.02)
+		end
+	end
+end)
+
+-- Rainbow title
+local hubTitle = Instance.new("TextLabel")
+hubTitle.Size = UDim2.new(1,0,0,30)
+hubTitle.BackgroundTransparency = 1
+hubTitle.Text = "👹 Viral Hub"
+hubTitle.Font = Enum.Font.GothamBlack
+hubTitle.TextScaled = true
+hubTitle.Parent = frame
+
+spawn(function()
+	while true do
+		for i = 0,255,5 do
+			hubTitle.TextColor3 = Color3.fromRGB(255,i,0)
+			task.wait(0.02)
+		end
+	end
+end)
+
+--========================
+-- MINIMIZE + CLOSE BUTTON
+--========================
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0,25,0,25)
+closeBtn.Position = UDim2.new(1,-25,0,0)
+closeBtn.Text = "X"
+closeBtn.BackgroundTransparency = 0.5
+closeBtn.TextColor3 = Color3.fromRGB(255,0,0)
+closeBtn.Parent = frame
+
+local miniBtn = Instance.new("TextButton")
+miniBtn.Size = UDim2.new(0,25,0,25)
+miniBtn.Position = UDim2.new(1,-60,0,0)
+miniBtn.Text = "-"
+miniBtn.BackgroundTransparency = 0.5
+miniBtn.TextColor3 = Color3.fromRGB(255,255,0)
+miniBtn.Parent = frame
+
+-- REOPEN POPUP
+local reopenBtn = Instance.new("TextButton")
+reopenBtn.Size = UDim2.new(0,120,0,30)
+reopenBtn.Position = UDim2.new(0.02,0,0.85,0)
+reopenBtn.Text = "Open Viral Hub"
+reopenBtn.Visible = false
+reopenBtn.BackgroundTransparency = 0.4
+reopenBtn.TextColor3 = Color3.fromRGB(255,80,80)
+reopenBtn.Parent = gui
+Instance.new("UICorner",reopenBtn)
+
+closeBtn.MouseButton1Click:Connect(function()
+	frame.Visible = false
+	reopenBtn.Visible = true
+end)
+
+reopenBtn.MouseButton1Click:Connect(function()
+	frame.Visible = true
+	reopenBtn.Visible = false
+end)
+
+miniBtn.MouseButton1Click:Connect(function()
+	frame.Size = UDim2.new(frame.Size.X.Scale,frame.Size.X.Offset,0,30)
+end)
+
+--========================
+-- MOBILE DRAG
+--========================
+local dragging, dragInput, dragStart, startPos
+frame.InputBegan:Connect(function(input)
+	if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+		dragging=true
+		dragStart=input.Position
+		startPos=frame.Position
+	end
+end)
+frame.InputChanged:Connect(function(input)
+	if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then
+		dragInput=input
+	end
+end)
+UIS.InputChanged:Connect(function(input)
+	if input==dragInput and dragging then
+		local delta=input.Position-dragStart
+		frame.Position=UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset+delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset+delta.Y
+		)
+	end
+end)
+UIS.InputEnded:Connect(function()
+	dragging=false
+end)
+
+--========================
+-- TABS
+--========================
+local tabBar = Instance.new("Frame")
+tabBar.Size = UDim2.new(1,0,0,30)
+tabBar.Position = UDim2.new(0,0,0,30)
+tabBar.BackgroundTransparency = 1
+tabBar.Parent = frame
+
+local function createTab(name,pos)
+	local b = Instance.new("TextButton")
+	b.Size = UDim2.new(0.33,0,1,0)
+	b.Position = pos
+	b.Text = name
+	b.BackgroundTransparency = 0.5
+	b.TextColor3 = Color3.fromRGB(255,255,255)
+	b.Parent = tabBar
+	return b
+end
+
+local mainTab = createTab("Main",UDim2.new(0,0,0,0))
+local playerTab = createTab("Player",UDim2.new(0.33,0,0,0))
+local serverTab = createTab("Server",UDim2.new(0.66,0,0,0))
+
+-- pages
+local mainPage = Instance.new("Frame")
+mainPage.Size = UDim2.new(1,0,1,-60)
+mainPage.Position = UDim2.new(0,0,0,60)
+mainPage.BackgroundTransparency = 1
+mainPage.Parent = frame
+
+local playerPage = mainPage:Clone()
+playerPage.Visible=false
+playerPage.Parent = frame
+
+local serverPage = mainPage:Clone()
+serverPage.Visible=false
+serverPage.Parent = frame
+
+local function switch(page)
+	mainPage.Visible=false
+	playerPage.Visible=false
+	serverPage.Visible=false
+	page.Visible=true
+end
+
+mainTab.MouseButton1Click:Connect(function() switch(mainPage) end)
+playerTab.MouseButton1Click:Connect(function() switch(playerPage) end)
+serverTab.MouseButton1Click:Connect(function() switch(serverPage) end)
+
+--========================
+-- WORKING SCREEN
+--========================
+local working = Instance.new("TextLabel")
+working.Size = UDim2.new(1,0,1,0)
+working.BackgroundTransparency = 1
+working.Text = "Working..."
+working.TextColor3 = Color3.fromRGB(255,80,80)
+working.Font = Enum.Font.GothamBlack
+working.TextScaled=true
+working.Visible=false
+working.Parent = frame
+
+--========================
+-- BUTTONS
+--========================
+local function makeButton(text,pos,page)
+	local b = Instance.new("TextButton")
+	b.Size = UDim2.new(0.8,0,0,40)
+	b.Position = pos
+	b.Text = text
+	b.BackgroundColor3 = Color3.fromRGB(60,0,0)
+	b.TextColor3 = Color3.fromRGB(255,120,120)
+	b.Font = Enum.Font.GothamBold
+	b.Parent = page
+	Instance.new("UICorner",b)
+
+	b.MouseButton1Click:Connect(function()
+		page.Visible=false
+		working.Visible=true
+		task.wait(2)
+		working.Visible=false
+		page.Visible=true
+	end)
+end
+
+makeButton("Force Trade",UDim2.new(0.1,0,0.2,0),mainPage)
+makeButton("Freeze Trade",UDim2.new(0.1,0,0.5,0),mainPage)
